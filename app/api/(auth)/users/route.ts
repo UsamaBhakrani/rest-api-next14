@@ -70,6 +70,7 @@ export const DELETE = async (request: NextRequest) => {
   try {
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get("userId");
+    await connect();
 
     if (!userId) {
       return new NextResponse(
@@ -83,7 +84,11 @@ export const DELETE = async (request: NextRequest) => {
       });
     }
 
-    await connect();
+    const user = await User.findByIdAndDelete(userId);
+    return new NextResponse(JSON.stringify({ message: "User deleted" }), {
+      status: 200,
+    });
+    
   } catch (error) {
     return new NextResponse(JSON.stringify({ message: "Error From Server" }), {
       status: 404,
