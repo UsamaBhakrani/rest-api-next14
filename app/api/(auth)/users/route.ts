@@ -84,10 +84,13 @@ export const DELETE = async (request: NextRequest) => {
       });
     }
 
-    const user = await User.findByIdAndDelete(userId);
-    return new NextResponse(JSON.stringify({ message: "User deleted" }), {
-      status: 200,
-    });
+    const deletedUser = await User.findByIdAndDelete(userId);
+    return new NextResponse(
+      JSON.stringify({ message: "User deleted", user: deletedUser }),
+      {
+        status: 200,
+      }
+    );
     
   } catch (error) {
     return new NextResponse(JSON.stringify({ message: "Error From Server" }), {
